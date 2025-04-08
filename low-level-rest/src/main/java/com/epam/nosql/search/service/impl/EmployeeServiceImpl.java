@@ -2,6 +2,7 @@ package com.epam.nosql.search.service.impl;
 
 import com.epam.nosql.search.dto.Employee;
 import com.epam.nosql.search.dto.QueryType;
+import com.epam.nosql.search.dto.StatType;
 import com.epam.nosql.search.service.EmployeeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,7 +92,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Map<String, Object> performAggregation(String aggregationName, String metricType, String metricField) throws IOException {
+    public Map<String, Object> performAggregation(String aggregationName, StatType metricType, String metricField) throws IOException {
         Request request = new Request("GET", "/" + INDEX + "/_search");
         String aggregationJson = String.format("""
             {
@@ -104,7 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 }
               }
             }
-            """, aggregationName, metricType, metricField);
+            """, aggregationName, metricType.toString(), metricField);
         request.setJsonEntity(aggregationJson);
 
         Response response = client.performRequest(request);
